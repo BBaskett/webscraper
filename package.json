@@ -1,0 +1,20 @@
+{
+  "name": "craigslist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "scrape": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "prompts": "^2.3.2",
+    "puppeteer": "^5.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
