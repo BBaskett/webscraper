@@ -12,9 +12,11 @@
 
 3. Run the `scrape` command to start scraping!
 
-   > `npm run scrape [location]`
+   > `npm run scrape [location?]`
 
    _**Note**: What is `location`? This is the location which you wish to perform your search. You can find a location by going to [Craigslist](https://www.craigslist.org/about/sites). Once a location is selected, copy the text which prepends ".craigslist.org" (e.g. **cnj**.craigslist.org would search Central New Jersey)_
+
+   _If you don't provide a location, you can select from a list of US craigslist locations._
 
 4. Open the `vehicles.csv` file.
 
