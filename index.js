@@ -18,16 +18,25 @@ async function parsePage(pageBody) {
     await $("ul.rows")
       .find("li.result-row")
       .each((i, el) => {
-        const name = $(el).find(".result-title").text().replace(/"/g, "");
+        const name = $(el).find(".result-title").text().replace(/"/g, ""); // Remove quotes from the string if they exist
         const price = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
           maximumSignificantDigits: 2,
-        }).format($(el).find(".result-meta .result-price").text().slice(1));
+        }).format(
+          parseInt(
+            $(el)
+              .find(".result-meta .result-price")
+              .text()
+              .slice(1) // Remove "$" from the beginning of the string
+              .replace(/,/g, "") // Remove commas from number string
+          ),
+          10
+        );
         let location = $(el)
           .find(".result-meta .result-hood")
           .text()
-          .slice(2, -1)
+          .slice(2, -1) // Remove enclosing parentheses around location
           .toUpperCase();
         location = location.length === 0 ? "NO LOCATION PROVIDED" : location;
         const link = $(el).find(".result-title").attr("href");
@@ -67,7 +76,6 @@ async function crawlPage(url, iteration) {
 if (process.argv[2]) {
   return crawlPage(URL, 1);
 } else {
-  console.log("** NO LOCATION SPECIFIED **");
   (async function getLocations() {
     try {
       const browser = await puppeteer.launch();
@@ -75,7 +83,6 @@ if (process.argv[2]) {
       await page.goto(process.env.CRAIGSLIST_LOCATIONS);
       await (async function buildLocationsList() {
         try {
-          console.log("Acquiring locations ...");
           const $ = await cheerio.load(await page.content());
           let locations = [];
           await $('h1 > a[name="US"]')
