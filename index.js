@@ -3,12 +3,14 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const path = require("path");
 const prompts = require("prompts");
-let URL = `https://${process.argv[2]}.craigslist.org/d/cars-trucks/search/cta`;
+const open = require("open");
 require("dotenv").config();
 
+let URL = `https://${process.argv[2]}.craigslist.org/d/cars-trucks/search/cta`;
 const writeStream = fs.createWriteStream(process.env.OUTPUT_FILE, {
   flags: "w",
 });
+
 // WriteStream Headers
 writeStream.write(`Price,Name,Location,Link\n`);
 
@@ -65,6 +67,13 @@ async function crawlPage(url, iteration) {
     } else {
       console.log("Scraping Completed");
       await browser.close();
+      try {
+        await open(process.env.OUTPUT_FILE);
+        return process.exit();
+      } catch (e) {
+        console.log(`Could not open the file.\n\nError: ${e}`);
+        return process.exit(1);
+      }
       return process.exit();
     }
   } catch (e) {
